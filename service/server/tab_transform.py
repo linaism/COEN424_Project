@@ -11,11 +11,6 @@ from tensorflow import keras
 from tensorflow.keras import layers
 import tensorflow_addons as tfa
 import matplotlib.pyplot as plt
-# from omnixai.data.tabular import Tabular
-# from omnixai.preprocessing.base import Identity
-# from omnixai.preprocessing.tabular import TabularTransform
-# from omnixai.explainers.tabular import TabularExplainer
-# from omnixai.visualization.dashboard import Dashboard
 
 
 credit_record = pd.read_csv('../data/credit_record.csv')

@@ -41,6 +41,7 @@ def credit_card_approval(CODE_GENDER,
     result = "Your credit card is approved!" if AMT_INCOME_TOTAL > 50000 else "Your credit card is not approved."
 
     return result
+
 iface = gr.Interface(
     fn=credit_card_approval,
     inputs=[
