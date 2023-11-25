@@ -5,7 +5,7 @@ import pandas as pd
 
 from omnixai.data.tabular import Tabular
 
-# Load the pre-trained machine learning model
+# Load the pre-trained machine learning model 
 model = joblib.load('model.pkl')
 transformer = joblib.load('transformer.pkl')
 
@@ -198,62 +198,6 @@ def predict(input_data):
     except Exception as e:
         return str(e)
 
-# # Define a Gradio interface
-# iface = gr.Interface(
-#     fn=predict,
-#     inputs="text",
-#     outputs="text",
-#     live=True
-# )
-
 if __name__ == '__main__':
     # Start the Gradio interface
     iface.launch()
-
-# from flask import Flask, render_template, request
-
-# app = Flask(__name__)
-
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-#     result = None
-
-#     if request.method == 'POST':
-#         user_input = request.form['user_input']
-#         # Process the input (for simplicity, let's just double the input)
-#         result = int(user_input) * 2
-
-#     return render_template('index.html', result=result)
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-
-# from flask import Flask, redirect, url_for, render_template, request, flash
-
-# app = Flask(__name__)
-
-# # messages = [{'title': 'Message One',
-# #              'content': 'Message One Content'},
-# #             {'title': 'Message Two',
-# #              'content': 'Message Two Content'}
-# #             ]
-
-# @app.route("/", methods=['POST', 'GET'])
-# def index(): 
-#     if request.method == 'POST':
-#         user = request.form["nm"]
-#         return render_template('index.html', user=user)
-#     else:
-#         return render_template('index.html')
-
-# # @app.route('/create/', methods=('GET', 'POST'))
-# # def create():
-# #     return render_template('create.html')
-
-# # @app.route("/<name>")
-# # def user(name):
-# #     return f"Hello {name}"
-
-# if __name__ == "__main__":
-#     app.run()
