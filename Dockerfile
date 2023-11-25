@@ -21,4 +21,7 @@ COPY . ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Adjust Gunicorn settings for improved performance and lower latency
-CMD python main.py
+CMD exec gunicorn \
+    --bind :$PORT \
+    --timeout 30 \
+    main:app
