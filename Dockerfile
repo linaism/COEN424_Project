@@ -1,21 +1,27 @@
-# Use the official lightweight Python image.
-# https://hub.docker.com/_/python
-FROM python:3.11-slim
+# Use the Python 3.11 base image
+FROM python:3.11
 
-# Allow statements and log messages to immediately appear in the logs
+# Install required dependencies
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    python3-pip
+
+# Set the PYTHONUNBUFFERED environment variable to True
 ENV PYTHONUNBUFFERED True
 
-# Copy local code to the container image.
+# Set the working directory inside the container
 ENV APP_HOME /app
 WORKDIR $APP_HOME
+
+# Copy the application code into the container
 COPY . ./
 
-# Install production dependencies.
+# Install Python dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Run the web service on container startup. Here we use the gunicorn
-# webserver, with one worker process and 8 threads.
-# For environments with multiple CPU cores, increase the number of workers
-# to be equal to the cores available.
-# Timeout is set to 0 to disable the timeouts of the workers to allow Cloud Run to handle instance scaling.
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app
+# Adjust Gunicorn settings for improved performance and lower latency
+CMD exec gunicorn \
+    --bind :$PORT \
+    --timeout 30 \
+    main:app
