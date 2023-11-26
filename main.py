@@ -179,7 +179,7 @@ iface = gr.Interface(
         gr.Number(0, label='Month balance')
     ],
     outputs="number",
-    live=True
+    live=False
 )
 
 
@@ -198,6 +198,4 @@ def predict(input_data):
     except Exception as e:
         return str(e)
 
-if __name__ == '__main__':
-    # Start the Gradio interface
-    iface.launch()
+iface.launch()
