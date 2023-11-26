@@ -20,8 +20,9 @@ COPY . ./
 # Install Python dependencies from requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN pip install gradio
+
+EXPOSE 7860
+
 # Adjust Gunicorn settings for improved performance and lower latency
-CMD exec gunicorn \
-    --bind :$PORT \
-    --timeout 30 \
-    main:app
+CMD ["python", "main.py"]
