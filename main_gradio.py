@@ -179,7 +179,7 @@ iface = gr.Interface(
         gr.Number(0, label='Month balance')
     ],
     outputs="number",
-    live=True
+    live=False
 )
 
 
