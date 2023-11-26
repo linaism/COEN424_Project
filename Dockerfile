@@ -22,7 +22,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 RUN pip install gradio
 
-EXPOSE 7860
-
 # Adjust Gunicorn settings for improved performance and lower latency
 CMD ["python", "main.py"]
