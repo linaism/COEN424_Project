@@ -1,15 +1,27 @@
 # Use the Python 3.11 base image
 FROM python:3.11
 
-ARG GRADIO_SERVER_PORT=7860
-ENV GRADIO_SERVER_PORT=${GRADIO_SERVER_PORT}
+# Install required dependencies
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    python3-pip
+
+# Set the PYTHONUNBUFFERED environment variable to True
+ENV PYTHONUNBUFFERED True
 
 # Set the working directory inside the container
 ENV APP_HOME /app
 WORKDIR $APP_HOME
 
-ADD requirements.txt main.py /app/
+# Copy the application code into the container
+COPY . ./
 
-RUN pip install -r /app/requirements.txt
+# Install Python dependencies from requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "/app/main.py"]
+# Adjust Gunicorn settings for improved performance and lower latency
+CMD exec gunicorn \
+    --bind :$PORT \
+    --timeout 30 \
+    main:app
