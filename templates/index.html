@@ -2,14 +2,125 @@
 
 {% block content %}
     <h1>{% block title %} Title {% endblock %}</h1>
-    
+
     <form action="/" method="post">
-        <label for="user_input">Enter a number:</label>
-        <input type="text" id="user_input" name="user_input" required>
-        <button type="submit">Submit</button>
+        <div class="row mb-3" class="form-check form-check-inline">
+            <label class="form-label" for="gender">Gender</label>
+            <!-- <legend class="col-form-label col-sm-2 pt-0">Gender</legend> -->
+            <div class="form-check-inline">
+                <input class="form-check-input" type="radio" id="male" name="gender" value="M" checked>
+                <label class="form-check-label" for="male">Male</label>
+            </div>
+            <div class="form-check-inline">
+                <input class="form-check-input" type="radio" id="female" name="gender" value="F">
+                <label class="form-check-label"for="female">Female</label><br>
+            </div>
+        </div>
+        
+
+        <!-- Input field for own car -->
+        <label class="form-label" for="ownCar">Own car</label>
+        <input class="form-check-input" type="radio" id="yesCar" name="ownCar" value="Yes" checked>
+        <label class="form-check-label" for="yesCar">Yes</label>
+        <input class="form-check-input" type="radio" id="noCar" name="ownCar" value="No">
+        <label class="form-check-label"for="noCar">No</label><br>
+
+        <!-- Input field for own realty -->
+        <label class="form-label" for="ownRealty">Own realty</label>
+        <input class="form-check-input" type="radio" id="yesRealty" name="ownRealty" value="Yes" checked>
+        <label class="form-check-label" for="yesRealty">Yes</label>
+        <input class="form-check-input" type="radio" id="noRealty" name="ownRealty" value="No">
+        <label class="form-check-label" for="noRealty">No</label><br>
+
+        <!-- Input field for children count -->
+        <label class="form-label" for="childrenCount">Children count</label>
+        <input class="form-control" type="number" id="childrenCount" name="childrenCount" value="0"><br>
+
+        <!-- Input field for total income -->
+        <label class="form-label" for="totalIncome">Total income</label>
+        <input class="form-control" type="number" id="totalIncome" name="totalIncome" value="0"><br>
+
+        <!-- Input field for income type -->
+        <label class="form-label" for="incomeType">Income type</label>
+        <select class="form-select" id="incomeType" name="incomeType">
+            {% for option in NAME_INCOME_TYPE %}
+                <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select><br>
+
+        <!-- Input field for education type -->
+        <label class="form-label" for="educationType">Education type</label>
+        <select class="form-select" id="educationType" name="educationType">
+            {% for option in NAME_EDUCATION_TYPE %}
+                <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select><br>
+
+        <!-- Input field for family status -->
+        <label class="form-label" for="familyStatus">Family status</label>
+        <select class="form-select" id="familyStatus" name="familyStatus">
+            {% for option in NAME_FAMILY_STATUS %}
+                <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select><br>
+
+        <!-- Input field for housing type -->
+        <label class="form-label" for="housingType">Housing type</label>
+        <select class="form-select" id="housingType" name="housingType">
+            {% for option in NAME_HOUSING_TYPE %}
+                <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select><br>
+
+        <!-- Input field for occupation type -->
+        <label class="form-label" for="occupationType">Occupation type</label>
+        <select class="form-select" id="occupationType" name="occupationType">
+            {% for option in OCCUPATION_TYPE %}
+                <option value="{{ option }}">{{ option }}</option>
+            {% endfor %}
+        </select><br>
+
+        <!-- Input field for mobile -->
+        <label class="form-label" for="mobile">Mobile</label>
+        <input class="form-check-input" type="radio" id="yesMobile" name="mobile" value="Yes" checked>
+        <label class="form-check-label" for="yesMobile">Yes</label>
+        <input class="form-check-input" type="radio" id="noMobile" name="mobile" value="No">
+        <label class="form-check-label" for="noMobile">No</label><br>
+
+        <!-- Input field for work phone -->
+        <label class="form-label" for="workPhone">Work phone</label>
+        <input class="form-check-input" type="radio" id="yesWorkPhone" name="workPhone" value="Yes" checked>
+        <label class="form-check-label" for="yesWorkPhone">Yes</label>
+        <input class="form-check-input" type="radio" id="noWorkPhone" name="workPhone" value="No">
+        <label class="form-check-label" for="noWorkPhone">No</label><br>
+
+        <!-- Input field for phone -->
+        <label class="form-label" for="phone">Phone</label>
+        <input class="form-check-input" type="radio" id="yesPhone" name="phone" value="Yes" checked>
+        <label class="form-check-label" for="yesPhone">Yes</label>
+        <input class="form-check-input" type="radio" id="noPhone" name="phone" value="No">
+        <label class="form-check-label" for="noPhone">No</label><br>
+
+        <!-- Input field for email -->
+        <label class="form-label" for="email">Email</label>
+        <input class="form-check-input" type="radio" id="yesEmail" name="email" value="Yes" checked>
+        <label class="form-check-label" for="yesEmail">Yes</label>
+        <input class="form-check-input" type="radio" id="noEmail" name="email" value="No">
+        <label class="form-check-label" for="noEmail">No</label><br>
+
+        <!-- Input field for family members count -->
+        <label class="form-label" for="familyMembersCount">Family members count</label>
+        <input class="form-control" type="number" id="familyMembersCount" name="familyMembersCount" value="0"><br>
+
+        <!-- Input field for month balance -->
+        <label class="form-label" for="monthBalance">Month balance</label>
+        <input class="form-control" type="number" id="monthBalance" name="monthBalance" value="0"><br>
+
+        <input type="submit" value="Submit">
     </form>
 
+
     {% if result %}
-        <p>Result: {{ result }}</p>
+        <p>Result {{ result }}</p>
     {% endif %}
 {% endblock %}
