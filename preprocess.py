@@ -86,7 +86,4 @@ explainers = TabularExplainer(
     }
 )
 
-def shap_explanation(instance):
-    local_explanations = explainers.explain(X=instance)
-    return local_explanations["shap"].plotly_plot(index=0, class_names=class_names).to_html()
 
