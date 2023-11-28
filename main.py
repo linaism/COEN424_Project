@@ -1,18 +1,22 @@
 import os
+import io
 import joblib
 import numpy as np
 import pandas as pd
 from flask_cors import CORS
-from flask import Flask, request, render_template, render_template_string
+from flask import Flask, request, render_template, render_template_string, Response
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+
 from omnixai.data.tabular import Tabular
-# from omnixai.explainers.tabular import TabularExplainer
-# from preprocess import explainers, transformer, class_names
+from omnixai.explainers.tabular import TabularExplainer
+from preprocess import explainers, transformer, class_names
 from db import MongoDB
 from doc_models.results_model import Results
 from datetime import datetime
+import matplotlib
 
-model = joblib.load('model.pkl')
-transformer = joblib.load('transformer.pkl')
+matplotlib.use('agg')
 
 table = None
 
@@ -135,6 +139,8 @@ def credit_card_approval(CODE_GENDER,
         for col in columns:
             data[col] = data[col].map(binary_flag)
 
+        model = joblib.load('model.pkl')
+        # transformer = joblib.load('transformer.pkl')
 
         # Make a prediction using the loaded model
         # prediction = model.predict(input_data)
@@ -200,11 +206,17 @@ def create_app():
         mongo.init_app(app)
         app.mongo = mongo
 
-    # @app.route('/result')
-    # def result():
-    #     # local_explanations = explainers.explain(X=table)
-    #     # html = local_explanations["shap"].plotly_plot(index=0, class_names=class_names).to_html()
-    #     return render_template_string(html)
+    @app.route('/plot.png')
+    def plot_png():
+        fig = create_figure()
+        output = io.BytesIO()
+        FigureCanvas(fig).print_png(output)
+        return Response(output.getvalue(), mimetype='image/png')
+
+    def create_figure():
+        local_explanations = explainers.explain(X=table)
+        plt = local_explanations["shap"].plot(index=0, class_names=class_names, max_num_subplots=4)
+        return plt
     
     @app.route('/history', methods=['GET'])
     def history():
@@ -212,8 +224,6 @@ def create_app():
         display_results = dict_to_table(list(res))
         return render_template('history.html', display_results=display_results)
 
-
-    # a simple page that says hello
     @app.route('/', methods=['GET', 'POST'])
     def index():
         print("In index")
@@ -256,7 +266,7 @@ def create_app():
                                           familyMembersCount, 
                                           monthBalance)
 
-            return render_template('index.html', result=result, 
+            return render_template('index.html', result=result, shap_img="shap_explanation.png",
                                    NAME_INCOME_TYPE=NAME_INCOME_TYPE,
                            NAME_EDUCATION_TYPE=NAME_EDUCATION_TYPE,
                            NAME_FAMILY_STATUS=NAME_FAMILY_STATUS,

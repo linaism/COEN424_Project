@@ -10,3 +10,4 @@ xgboost==2.0.2
 pydantic
 pymongo
 dash
+matplotlib
