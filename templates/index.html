@@ -1,47 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %} Title {% endblock %}</h1>
-
+<div class="container mb-5">
+    <div class="col text-center">
+        <h1 class="text-primary-emphasis display-5">{% block title %} Credit Card Application Approval Predictor {% endblock %}</h1>
+    </div>
+    <div class="card">
+        <div class="card-body">
     <form action="/" method="post">
-        <div class="row mb-3" class="form-check form-check-inline">
+
+        <div class="fs-5">
             <label class="form-label" for="gender">Gender</label>
-            <!-- <legend class="col-form-label col-sm-2 pt-0">Gender</legend> -->
-            <div class="form-check-inline">
-                <input class="form-check-input" type="radio" id="male" name="gender" value="M" checked>
-                <label class="form-check-label" for="male">Male</label>
-            </div>
-            <div class="form-check-inline">
-                <input class="form-check-input" type="radio" id="female" name="gender" value="F">
-                <label class="form-check-label"for="female">Female</label><br>
-            </div>
-        </div>
-        
+        </div> 
+        <input class="form-check-input" type="radio" id="male" name="gender" value="M" checked>
+        <label class="form-check-label" for="male">Male</label>
+        <input class="form-check-input" type="radio" id="female" name="gender" value="F">
+        <label class="form-check-label mb-3"for="female">Female</label><br>
 
         <!-- Input field for own car -->
-        <label class="form-label" for="ownCar">Own car</label>
+        <div class="fs-5">
+            <label class="form-label" for="ownCar">Own car</label>
+        </div>
         <input class="form-check-input" type="radio" id="yesCar" name="ownCar" value="Yes" checked>
         <label class="form-check-label" for="yesCar">Yes</label>
         <input class="form-check-input" type="radio" id="noCar" name="ownCar" value="No">
-        <label class="form-check-label"for="noCar">No</label><br>
+        <label class="form-check-label mb-3"for="noCar">No</label><br>
 
         <!-- Input field for own realty -->
-        <label class="form-label" for="ownRealty">Own realty</label>
+        <div class="fs-5">
+            <label class="form-label" for="ownRealty">Own realty</label>
+        </div>
         <input class="form-check-input" type="radio" id="yesRealty" name="ownRealty" value="Yes" checked>
         <label class="form-check-label" for="yesRealty">Yes</label>
         <input class="form-check-input" type="radio" id="noRealty" name="ownRealty" value="No">
-        <label class="form-check-label" for="noRealty">No</label><br>
+        <label class="form-check-label mb-3" for="noRealty">No</label><br>
 
         <!-- Input field for children count -->
+        <div class="fs-5">
         <label class="form-label" for="childrenCount">Children count</label>
+        </div>
         <input class="form-control" type="number" id="childrenCount" name="childrenCount" value="0"><br>
 
         <!-- Input field for total income -->
+        <div class="fs-5">
         <label class="form-label" for="totalIncome">Total income</label>
+        </div>
         <input class="form-control" type="number" id="totalIncome" name="totalIncome" value="0"><br>
 
         <!-- Input field for income type -->
+        <div class="fs-5">
         <label class="form-label" for="incomeType">Income type</label>
+        </div>
         <select class="form-select" id="incomeType" name="incomeType">
             {% for option in NAME_INCOME_TYPE %}
                 <option value="{{ option }}">{{ option }}</option>
@@ -49,7 +58,9 @@
         </select><br>
 
         <!-- Input field for education type -->
+        <div class="fs-5">
         <label class="form-label" for="educationType">Education type</label>
+        </div>
         <select class="form-select" id="educationType" name="educationType">
             {% for option in NAME_EDUCATION_TYPE %}
                 <option value="{{ option }}">{{ option }}</option>
@@ -57,7 +68,9 @@
         </select><br>
 
         <!-- Input field for family status -->
+        <div class="fs-5">
         <label class="form-label" for="familyStatus">Family status</label>
+        </div>
         <select class="form-select" id="familyStatus" name="familyStatus">
             {% for option in NAME_FAMILY_STATUS %}
                 <option value="{{ option }}">{{ option }}</option>
@@ -65,7 +78,9 @@
         </select><br>
 
         <!-- Input field for housing type -->
+        <div class="fs-5">
         <label class="form-label" for="housingType">Housing type</label>
+        </div>
         <select class="form-select" id="housingType" name="housingType">
             {% for option in NAME_HOUSING_TYPE %}
                 <option value="{{ option }}">{{ option }}</option>
@@ -73,7 +88,9 @@
         </select><br>
 
         <!-- Input field for occupation type -->
+        <div class="fs-5">
         <label class="form-label" for="occupationType">Occupation type</label>
+        </div>
         <select class="form-select" id="occupationType" name="occupationType">
             {% for option in OCCUPATION_TYPE %}
                 <option value="{{ option }}">{{ option }}</option>
@@ -81,83 +98,67 @@
         </select><br>
 
         <!-- Input field for mobile -->
+        <div class="fs-5">
         <label class="form-label" for="mobile">Mobile</label>
+        </div>
         <input class="form-check-input" type="radio" id="yesMobile" name="mobile" value="Yes" checked>
         <label class="form-check-label" for="yesMobile">Yes</label>
         <input class="form-check-input" type="radio" id="noMobile" name="mobile" value="No">
-        <label class="form-check-label" for="noMobile">No</label><br>
+        <label class="form-check-label mb-3" for="noMobile">No</label><br>
 
         <!-- Input field for work phone -->
+        <div class="fs-5">
         <label class="form-label" for="workPhone">Work phone</label>
+        </div>
         <input class="form-check-input" type="radio" id="yesWorkPhone" name="workPhone" value="Yes" checked>
         <label class="form-check-label" for="yesWorkPhone">Yes</label>
         <input class="form-check-input" type="radio" id="noWorkPhone" name="workPhone" value="No">
-        <label class="form-check-label" for="noWorkPhone">No</label><br>
+        <label class="form-check-label mb-3" for="noWorkPhone">No</label><br>
 
         <!-- Input field for phone -->
+        <div class="fs-5">
         <label class="form-label" for="phone">Phone</label>
+        </div>
         <input class="form-check-input" type="radio" id="yesPhone" name="phone" value="Yes" checked>
         <label class="form-check-label" for="yesPhone">Yes</label>
         <input class="form-check-input" type="radio" id="noPhone" name="phone" value="No">
-        <label class="form-check-label" for="noPhone">No</label><br>
+        <label class="form-check-label mb-3" for="noPhone">No</label><br>
 
         <!-- Input field for email -->
+        <div class="fs-5">
         <label class="form-label" for="email">Email</label>
+        </div>
         <input class="form-check-input" type="radio" id="yesEmail" name="email" value="Yes" checked>
         <label class="form-check-label" for="yesEmail">Yes</label>
         <input class="form-check-input" type="radio" id="noEmail" name="email" value="No">
-        <label class="form-check-label" for="noEmail">No</label><br>
+        <label class="form-check-label mb-3" for="noEmail">No</label><br>
 
         <!-- Input field for family members count -->
+        <div class="fs-5">
         <label class="form-label" for="familyMembersCount">Family members count</label>
+        </div>
         <input class="form-control" type="number" id="familyMembersCount" name="familyMembersCount" value="0"><br>
 
         <!-- Input field for month balance -->
+        <div class="fs-5">
         <label class="form-label" for="monthBalance">Month balance</label>
+        </div>
         <input class="form-control" type="number" id="monthBalance" name="monthBalance" value="0"><br>
 
-        <input type="submit" value="Submit">
+        <div class="col text-center">
+            <input class="btn btn-primary" type="submit" value="Submit">
+        </div>
+        
     </form>
-
+    </div>
+</div>
 
     {% if result %}
-        <p>Result {{ result }}</p>
-        <div class="container mt-5">
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Code Gender</th>
-                  <th>Own Car</th>
-                  <th>Own Realty</th>
-                  <th>Children Count</th>
-                  <th>Income Total</th>
-                  <th>Income Type</th>
-                  <th>Education Type</th>
-                  <th>Family Status</th>
-                  <th>Housing Type</th>
-                  <th>Mobile Flag</th>
-                  <th>Work Phone Flag</th>
-                  <th>Phone Flag</th>
-                  <th>Email Flag</th>
-                  <th>Occupation Type</th>
-                  <th>Family Members Count</th>
-                  <th>Months Balance</th>
-                  <th>Prediction</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for row in display_results%}
-                    <tr>
-                        {% for value in row%}
-                        <td>{{value}}</td>
-                        {% endfor %}
-                    </tr>
-                {% endfor %} 
-                <!-- Add more rows as needed -->
-              </tbody>
-            </table>
-          </div>
-        <a href="{{ url_for('result') }}"><button type="button" class="btn btn-primary">View SHAP Explanation</button></a>
+        {% if result == 'Approved'%}
+        <p class="lead fs-3 text-success">Predicted credit card request status: {{result}}</p>
+        {% else %}
+        <p class="lead fs-3 text-danger">Predicted credit card request status: {{result}}</p>
+        {% endif%}
     {% endif %}
+</div>
 {% endblock %}

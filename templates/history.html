@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+  <h1>History Page</h1>
+  <div class="row justify-content-center">
+    <div class="col-auto">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Gender</th>
+            <th>Own Car</th>
+            <th>Own Realty</th>
+            <th>Children Count</th>
+            <th>Income Total</th>
+            <th>Income Type</th>
+            <th>Education Type</th>
+            <th>Family Status</th>
+            <th>Housing Type</th>
+            <th>Mobile Flag</th>
+            <th>Work Phone Flag</th>
+            <th>Phone Flag</th>
+            <th>Email Flag</th>
+            <th>Occupation Type</th>
+            <th>Family Members Count</th>
+            <th>Months Balance</th>
+            <th>Prediction</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in display_results%}
+              <tr>
+                  {% for value in row%}
+                  <td>{{value}}</td>
+                  {% endfor %}
+              </tr>
+          {% endfor %} 
+          <!-- Add more rows as needed -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

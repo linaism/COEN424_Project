@@ -5,14 +5,16 @@ import pandas as pd
 from flask_cors import CORS
 from flask import Flask, request, render_template, render_template_string
 from omnixai.data.tabular import Tabular
-from omnixai.explainers.tabular import TabularExplainer
-from preprocess import explainers, transformer, class_names
+# from omnixai.explainers.tabular import TabularExplainer
+# from preprocess import explainers, transformer, class_names
 from db import MongoDB
 from doc_models.results_model import Results
 from datetime import datetime
+from dash import dash, dcc, html
+
 
 model = joblib.load('model.pkl')
-# transformer = joblib.load('transformer.pkl')
+transformer = joblib.load('transformer.pkl')
 
 table = None
 
@@ -200,11 +202,18 @@ def create_app():
         mongo.init_app(app)
         app.mongo = mongo
 
-    @app.route('/result')
-    def result():
-        local_explanations = explainers.explain(X=table)
-        html = local_explanations["shap"].plotly_plot(index=0, class_names=class_names).to_html()
-        return render_template_string(html)
+    # @app.route('/result')
+    # def result():
+    #     # local_explanations = explainers.explain(X=table)
+    #     # html = local_explanations["shap"].plotly_plot(index=0, class_names=class_names).to_html()
+    #     return render_template_string(html)
+    
+    @app.route('/history', methods=['GET'])
+    def history():
+        res = app.mongo.get_all_results()
+        display_results = dict_to_table(list(res))
+        return render_template('history.html', display_results=display_results)
+
 
     # a simple page that says hello
     @app.route('/', methods=['GET', 'POST'])
@@ -248,12 +257,8 @@ def create_app():
                                           occupationType, 
                                           familyMembersCount, 
                                           monthBalance)
-            
-            res = app.mongo.get_all_results()
 
-            display_results = dict_to_table(list(res))
-
-            return render_template('index.html', display_results=display_results, result=result, 
+            return render_template('index.html', result=result, 
                                    NAME_INCOME_TYPE=NAME_INCOME_TYPE,
                            NAME_EDUCATION_TYPE=NAME_EDUCATION_TYPE,
                            NAME_FAMILY_STATUS=NAME_FAMILY_STATUS,
