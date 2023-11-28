@@ -128,6 +128,8 @@ def credit_card_approval(CODE_GENDER,
                        'F' : 0}
         binary_flag = {'Yes' : 1,
                        'No': 0}
+        prediction_flag = {0: 'Not approved',
+                           1: 'Approved'}
         data["CODE_GENDER"] = data['CODE_GENDER'].map(gender_flag)
 
         columns = ["FLAG_OWN_CAR", "FLAG_OWN_REALTY", "FLAG_MOBIL", "FLAG_WORK_PHONE","FLAG_PHONE","FLAG_EMAIL"]
@@ -149,8 +151,7 @@ def credit_card_approval(CODE_GENDER,
         # Make a prediction using the loaded model
         prediction = model.predict(transformed_input)
 
-        print(prediction)
-        print(data.iloc[0]['CODE_GENDER'])
+        pred_value = prediction_flag.get(prediction[0])
 
         docmodel = Results(TIMESTAMP=datetime.utcnow(),
             CODE_GENDER=CODE_GENDER,
@@ -169,15 +170,11 @@ def credit_card_approval(CODE_GENDER,
             OCCUPATION_TYPE=OCCUPATION_TYPE,
             CNT_FAM_MEMBERS=CNT_FAM_MEMBERS,
             MONTHS_BALANCE=MONTHS_BALANCE,
-            PREDICTION=prediction[0])
+            PREDICTION=pred_value)
         save_result = app.mongo.save_results(docmodel.to_json(),)
 
-        display_results = app.mongo.get_all_results()
-        my_list = []
-        for item in display_results:
-            my_list.append(item)
-            print(item)
-        return prediction[0]
+        # display_results = app.mongo.get_all_results()
+        return pred_value
     except Exception as e:
         return str(e)
     

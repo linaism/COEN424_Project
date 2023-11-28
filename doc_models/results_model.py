@@ -19,7 +19,7 @@ class Results(BaseModel):
     OCCUPATION_TYPE: str
     CNT_FAM_MEMBERS: float
     MONTHS_BALANCE: float
-    PREDICTION: int
+    PREDICTION: str
 
     def to_json(self): 
         return self.__dict__
