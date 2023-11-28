@@ -10,8 +10,6 @@ from omnixai.data.tabular import Tabular
 from db import MongoDB
 from doc_models.results_model import Results
 from datetime import datetime
-from dash import dash, dcc, html
-
 
 model = joblib.load('model.pkl')
 transformer = joblib.load('transformer.pkl')
