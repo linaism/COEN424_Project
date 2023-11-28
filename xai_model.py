@@ -10,7 +10,7 @@ import joblib
 
 from omnixai.data.tabular import Tabular
 from omnixai.preprocessing.tabular import TabularTransform
-from omnixai.explainers.tabular import TabularExplainer
+from omnixai.explainers.tabular import TabularExplainer, GPTExplainer
 
 
 credit_record = pd.read_csv('data/credit_record.csv')
@@ -98,6 +98,8 @@ transformer = TabularTransform().fit(tabular_data)
 class_names = transformer.class_names
 x = transformer.transform(tabular_data)
 X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(x[:, :-1], x[:, -1], train_size=0.80)
+# X_train.to_csv('train_data.csv', index=False)
+np.savetxt('train_data.csv', X_train, delimiter=',')
 print('Training data shape: {}'.format(X_train.shape))
 print('Test data shape:     {}'.format(X_test.shape))
 
@@ -163,7 +165,8 @@ explainers = TabularExplainer(
         "shap": {"nsamples": 100},
     }
 )
-# Generate explanations
+
+# # Generate explanations
 test_instances = test_data[1653:1658]
 local_explanations = explainers.explain(X=test_instances)
 # global_explanations = explainers.explain_global(
@@ -174,5 +177,23 @@ local_explanations = explainers.explain(X=test_instances)
 # )
 
 print("SHAP results:")
-local_explanations["shap"].ipython_plot(index=1, class_names=class_names)
+# local_explanations["shap"].ipython_plot(index=1, class_names=class_names)
+# local_explanations["shap"].plot(index=1, class_names=class_names, max_num_subplots=4).show()
+print(local_explanations["shap"].plotly_plot(index=1, class_names=class_names))
 
+# predict_function=lambda z: gbtree.predict_proba(transformer.transform(z))
+
+# explainer = GPTExplainer(
+#     training_data=tabular_data,
+#     predict_function=predict_function,
+#     apikey="sk-xxx"
+# )
+# # Apply an inverse transform, i.e., converting the numpy array back to `Tabular`
+# test_instance = transformer.invert(X_test)
+# test_x = test_instance[1654]
+
+# print(test_x.data.iloc[0])
+# print(test_x.categorical_cols)
+
+# explanations = explainer.explain(test_x)
+# print(explanations.get_explanations(index=1)["text"])

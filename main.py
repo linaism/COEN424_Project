@@ -3,11 +3,18 @@ import joblib
 import numpy as np
 import pandas as pd
 from flask_cors import CORS
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, render_template_string
 from omnixai.data.tabular import Tabular
+from omnixai.explainers.tabular import TabularExplainer
+from preprocess import explainers, transformer, class_names
+from db import MongoDB
+from doc_models.results_model import Results
+from datetime import datetime
 
 model = joblib.load('model.pkl')
-transformer = joblib.load('transformer.pkl')
+# transformer = joblib.load('transformer.pkl')
+
+table = None
 
 COLUMNS =['CODE_GENDER', 
           'FLAG_OWN_CAR', 
@@ -114,9 +121,8 @@ def credit_card_approval(CODE_GENDER,
             CNT_FAM_MEMBERS,
             MONTHS_BALANCE]])
 
-
         data = pd.DataFrame(input_data, columns=COLUMNS)
-        print(data)
+        print(data.iloc[0])
 
         gender_flag = {'M' : 1,
                        'F' : 0}
@@ -128,11 +134,12 @@ def credit_card_approval(CODE_GENDER,
         for col in columns:
             data[col] = data[col].map(binary_flag)
 
-        print(data)
+        print(data.iloc[0])
 
         # Make a prediction using the loaded model
         # prediction = model.predict(input_data)
         # Preprocess the input
+        global table
         table = Tabular(
             data=data,
             categorical_columns=CATEGORICAL_FEATURES,
@@ -143,19 +150,67 @@ def credit_card_approval(CODE_GENDER,
         prediction = model.predict(transformed_input)
 
         print(prediction)
+        print(data.iloc[0]['CODE_GENDER'])
+
+        docmodel = Results(TIMESTAMP=datetime.utcnow(),
+            CODE_GENDER=CODE_GENDER,
+            FLAG_OWN_CAR=FLAG_OWN_CAR,
+            FLAG_OWN_REALTY=FLAG_OWN_REALTY,
+            CNT_CHILDREN=CNT_CHILDREN,
+            AMT_INCOME_TOTAL=AMT_INCOME_TOTAL,
+            NAME_INCOME_TYPE=NAME_INCOME_TYPE,
+            NAME_EDUCATION_TYPE=NAME_EDUCATION_TYPE,
+            NAME_FAMILY_STATUS=NAME_FAMILY_STATUS,
+            NAME_HOUSING_TYPE=NAME_HOUSING_TYPE,
+            FLAG_MOBIL=FLAG_MOBIL,
+            FLAG_WORK_PHONE=FLAG_WORK_PHONE,
+            FLAG_PHONE=FLAG_PHONE,
+            FLAG_EMAIL=FLAG_EMAIL,
+            OCCUPATION_TYPE=OCCUPATION_TYPE,
+            CNT_FAM_MEMBERS=CNT_FAM_MEMBERS,
+            MONTHS_BALANCE=MONTHS_BALANCE,
+            PREDICTION=prediction[0])
+        save_result = app.mongo.save_results(docmodel.to_json(),)
+
+        display_results = app.mongo.get_all_results()
+        my_list = []
+        for item in display_results:
+            my_list.append(item)
+            print(item)
         return prediction[0]
     except Exception as e:
         return str(e)
+    
+
+def dict_to_table(dict_list):
+    rows = [] 
+    for item in dict_list: 
+        entry = []
+        for key, value in item.items(): 
+            entry.append(value)
+        rows.append(entry)
+    return rows
 
 
 def create_app():
-    # preload_model()
-
     # create and configure the app
     app = Flask(__name__)
 
     # enable CORS
     CORS(app, resources={r'/*': {'origins': '*'}})
+    MONGO_URI = os.environ.get("MONGO_URI")
+
+    with app.app_context():
+        mongo = MongoDB(MONGO_URI)
+        mongo.init_app(app)
+        app.mongo = mongo
+
+    @app.route('/result')
+    def result():
+        local_explanations = explainers.explain(X=table)
+        html = local_explanations["shap"].plotly_plot(index=0, class_names=class_names).to_html()
+        print(html)
+        return render_template_string(html)
 
     # a simple page that says hello
     @app.route('/', methods=['GET', 'POST'])
@@ -191,14 +246,22 @@ def create_app():
                                           educationType, 
                                           familyStatus,
                                           housingType, 
-                                          occupationType, 
                                           mobile, 
                                           workPhone, 
                                           phone, 
                                           email, 
+                                          occupationType, 
                                           familyMembersCount, 
                                           monthBalance)
-            return render_template('index.html', result=result, 
+            
+            res = app.mongo.get_all_results()
+
+            
+            # print(list(display_results))
+
+            display_results = dict_to_table(list(res))
+
+            return render_template('index.html', display_results=display_results, result=result, 
                                    NAME_INCOME_TYPE=NAME_INCOME_TYPE,
                            NAME_EDUCATION_TYPE=NAME_EDUCATION_TYPE,
                            NAME_FAMILY_STATUS=NAME_FAMILY_STATUS,

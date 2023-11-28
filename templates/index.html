@@ -122,5 +122,42 @@
 
     {% if result %}
         <p>Result {{ result }}</p>
+        <div class="container mt-5">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Code Gender</th>
+                  <th>Own Car</th>
+                  <th>Own Realty</th>
+                  <th>Children Count</th>
+                  <th>Income Total</th>
+                  <th>Income Type</th>
+                  <th>Education Type</th>
+                  <th>Family Status</th>
+                  <th>Housing Type</th>
+                  <th>Mobile Flag</th>
+                  <th>Work Phone Flag</th>
+                  <th>Phone Flag</th>
+                  <th>Email Flag</th>
+                  <th>Occupation Type</th>
+                  <th>Family Members Count</th>
+                  <th>Months Balance</th>
+                  <th>Prediction</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for row in display_results%}
+                    <tr>
+                        {% for value in row%}
+                        <td>{{value}}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %} 
+                <!-- Add more rows as needed -->
+              </tbody>
+            </table>
+          </div>
+        <a href="{{ url_for('result') }}"><button type="button" class="btn btn-primary">View SHAP Explanation</button></a>
     {% endif %}
 {% endblock %}
