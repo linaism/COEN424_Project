@@ -159,6 +159,7 @@
         {% else %}
         <p class="lead fs-3 text-danger">Predicted credit card request status: {{result}}</p>
         {% endif%}
+        <a class="btn btn-primary" href="{{url_for('plot_png')}}" target=”_blank”>Explanation</a>
     {% endif %}
 </div>
 {% endblock %}

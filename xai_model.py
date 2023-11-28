@@ -178,7 +178,8 @@ local_explanations = explainers.explain(X=test_instances)
 
 # print("SHAP results:")
 # local_explanations["shap"].ipython_plot(index=1, class_names=class_names)
-# local_explanations["shap"].plot(index=1, class_names=class_names, max_num_subplots=4).show()
+# plt = local_explanations["shap"].plot(index=1, class_names=class_names, max_num_subplots=4)
+# plt.savefig("shap_explanation.png")
 # print(local_explanations["shap"].plotly_plot(index=1, class_names=class_names))
 
 # predict_function=lambda z: gbtree.predict_proba(transformer.transform(z))
