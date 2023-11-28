@@ -18,7 +18,7 @@ import matplotlib
 
 matplotlib.use('agg')
 
-table = None
+table = Tabular(pd.DataFrame([]))
 
 COLUMNS =['CODE_GENDER', 
           'FLAG_OWN_CAR', 
