@@ -122,7 +122,6 @@ def credit_card_approval(CODE_GENDER,
             MONTHS_BALANCE]])
 
         data = pd.DataFrame(input_data, columns=COLUMNS)
-        print(data.iloc[0])
 
         gender_flag = {'M' : 1,
                        'F' : 0}
@@ -136,7 +135,6 @@ def credit_card_approval(CODE_GENDER,
         for col in columns:
             data[col] = data[col].map(binary_flag)
 
-        print(data.iloc[0])
 
         # Make a prediction using the loaded model
         # prediction = model.predict(input_data)
@@ -206,12 +204,12 @@ def create_app():
     def result():
         local_explanations = explainers.explain(X=table)
         html = local_explanations["shap"].plotly_plot(index=0, class_names=class_names).to_html()
-        print(html)
         return render_template_string(html)
 
     # a simple page that says hello
     @app.route('/', methods=['GET', 'POST'])
     def index():
+        print("In index")
         if request.method == 'POST':
             # Form was submitted, process the data
             gender = request.form.get('gender')
@@ -252,9 +250,6 @@ def create_app():
                                           monthBalance)
             
             res = app.mongo.get_all_results()
-
-            
-            # print(list(display_results))
 
             display_results = dict_to_table(list(res))
 

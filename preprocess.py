@@ -18,10 +18,8 @@ application_record = pd.read_csv('data/application_record.csv')
 
 columns = ["CODE_GENDER", "FLAG_OWN_CAR", "FLAG_OWN_REALTY"]
 for objColumn in columns:
-    print(application_record[objColumn])
     label = LabelEncoder()
     application_record[objColumn] = label.fit_transform(application_record[objColumn].values)
-    print(application_record[objColumn])
 
 # Drop unnessessary columns
 application_record.drop(['DAYS_BIRTH', 'DAYS_EMPLOYED'], inplace=True, axis=1)
