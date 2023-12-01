@@ -4,12 +4,10 @@ import joblib
 import numpy as np
 import pandas as pd
 from flask_cors import CORS
-from flask import Flask, request, render_template, render_template_string, Response
+from flask import Flask, request, render_template, Response
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
-from matplotlib.figure import Figure
 
 from omnixai.data.tabular import Tabular
-from omnixai.explainers.tabular import TabularExplainer
 from preprocess import explainers, transformer, class_names
 from db import MongoDB
 from doc_models.results_model import Results
@@ -18,6 +16,7 @@ import matplotlib
 
 matplotlib.use('agg')
 
+model = joblib.load('model.pkl')
 table = Tabular(pd.DataFrame([]))
 
 COLUMNS =['CODE_GENDER', 
@@ -139,11 +138,6 @@ def credit_card_approval(CODE_GENDER,
         for col in columns:
             data[col] = data[col].map(binary_flag)
 
-        model = joblib.load('model.pkl')
-        # transformer = joblib.load('transformer.pkl')
-
-        # Make a prediction using the loaded model
-        # prediction = model.predict(input_data)
         # Preprocess the input
         global table
         table = Tabular(
@@ -177,7 +171,6 @@ def credit_card_approval(CODE_GENDER,
             PREDICTION=pred_value)
         save_result = app.mongo.save_results(docmodel.to_json(),)
 
-        # display_results = app.mongo.get_all_results()
         return pred_value
     except Exception as e:
         return str(e)
@@ -246,9 +239,7 @@ def create_app():
             familyMembersCount = request.form.get('familyMembersCount')
             monthBalance = request.form.get('monthBalance')
 
-            # Process the form data as needed
-
-            # Pass the result to the template
+            # Obtain the result
             result = credit_card_approval(gender, 
                                           ownCar, 
                                           ownRealty, 
